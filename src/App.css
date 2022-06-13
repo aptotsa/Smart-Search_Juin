@@ -3,7 +3,10 @@
   background-color: #111d4a;
   align-items: center;
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
   margin: auto;
+  padding: 20px 80px 20px 80px;
 }
 
 
@@ -36,9 +39,27 @@
     transform: rotate(360deg);
   }
 }
-h2{
+h1{
   font-family: "Sofia", sans-serif;
-  font-size: 30px;
-  text-shadow: 3px 3px 3px #ababab;
-  color: #00ffe7;
+  font-size: 50px;
+  color: #b4d5e5;
 }
+
+.searchField {
+  background-color: rgb(255, 251, 251);
+  border-radius: 4px;
+  width: 80%;
+}
+
+.data-grid {
+  width: 100%;
+  border-radius: 10px;
+  background-color: white;
+  margin-top: 30px;
+}
+
+.totalBox{
+  font-weight: bold;
+  color:black
+}
+

@@ -1,70 +1,41 @@
-# Getting Started with Create React App
+# Smart Search React/MUI - IFRAH
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Le projet est une page web qui permet la récupération de la liste des tournage (10000 rows) et la recherche via un autocomplete de MUI
 
-## Available Scripts
+## Composants utilisés
 
-In the project directory, you can run:
+### `Autocomplete MUI`
 
-### `npm start`
+Le composant propose une liste d'options pour filtrer groupé (type_tournage, annee_tournage, ardt_lieu)
+Le choix d'une option entraine la suppression de cette option de la liste et déclenche le filtre
+La fermeture de toutes les options reset le filtre et toutes les données sont affichés
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### `DataGrid MUI`
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Le composant permet d'afficher toute la liste des tournages par pagination de 50 rows par page
+Il affiche le total des résultats après le filtre ou après reset
 
-### `npm test`
+### `Axios`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Utilisé pour récupérer toute la liste des tournages au chargement de la page (le chargement est rapide)
 
-### `npm run build`
+## `Les fonctions utiles`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+###`fetchData.js`
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Cette fonction retourne une promesse qui fetch la liste des tournages en utilisant axios
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### `filterRecords.js`
 
-### `npm run eject`
+Cette fonction prends toute la liste des tournages et la liste des filtres utilisateurs et retourne la liste filtrée
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### `getOptionsByGroup.js`
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Cette fonction retourne la liste des options groupé par domain
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## `Le scénario utilisateur`
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+1. L'utilisateur choisis 1 ou N mots dans la liste des options du search field
+2. La recherche accepte toutes les combinaisons possibles
+3. Le filtre se déclenche automatiquement (Onchange)
+4. Le resultat du filtre est mis à jours de manière rapide et fluide dans le DataGrid
