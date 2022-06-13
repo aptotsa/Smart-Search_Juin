@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<LodingProgress/> should render correctly 1`] = `
+<div>
+  <div
+    class="LoadingProgress"
+  >
+    <h6
+      class="MuiTypography-root MuiTypography-subtitle2 css-1sr7afs-MuiTypography-root"
+    >
+      50 résultats chargés sur 100
+    </h6>
+    <span
+      aria-valuemax="100"
+      aria-valuemin="0"
+      aria-valuenow="50"
+      class="MuiLinearProgress-root MuiLinearProgress-colorPrimary MuiLinearProgress-determinate css-eglki6-MuiLinearProgress-root"
+      role="progressbar"
+    >
+      <span
+        class="MuiLinearProgress-bar MuiLinearProgress-barColorPrimary MuiLinearProgress-bar1Determinate css-5xe99f-MuiLinearProgress-bar1"
+        style="transform: translateX(-50%);"
+      />
+    </span>
+  </div>
+</div>
+`;

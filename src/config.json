@@ -1,0 +1,62 @@
+{
+  "api": {
+    "filmLocation": {
+      "baseUrl": "https://opendata.paris.fr/api/records/1.0/search/",
+      "params": {
+        "dataset": "lieux-de-tournage-a-paris",
+        "disjunctive.type_tournage": "true",
+        "disjunctive.annee_tournage": "true",
+        "disjunctive.nom_tournage": "true",
+        "disjunctive.nom_realisateur": "true",
+        "disjunctive.nom_producteur": "true",
+        "disjunctive.ardt_lieu": "true",
+        "facet": [
+          "type_tournage",
+          "annee_tournage",
+          "nom_tournage",
+          "nom_realisateur",
+          "nom_producteur",
+          "ardt_lieu",
+          "date_debut",
+          "date_fin"
+        ],
+        "rows": 10,
+        "timezone": "Europe/Berlin",
+        "lang": "fr"
+      },
+      "fields": [
+        {
+          "id": "annee_tournage",
+          "label": "Année",
+          "filterable": true
+        },
+        {
+          "id": "type_tournage",
+          "label": "Type",
+          "filterable": true
+        },
+        {
+          "id": "nom_tournage",
+          "label": "Nom"
+        },
+        {
+          "id": "nom_realisateur",
+          "label": "Réalisateur"
+        },
+        {
+          "id": "nom_producteur",
+          "label": "Producteur"
+        },
+        {
+          "id": "adresse_lieu",
+          "label": "Adresse"
+        },
+        {
+          "id": "ardt_lieu",
+          "label": "Code Postal",
+          "filterable": true
+        }
+      ]
+    }
+  }
+}

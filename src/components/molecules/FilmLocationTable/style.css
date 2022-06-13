@@ -1,0 +1,6 @@
+.FilmLocationTable__container::-webkit-scrollbar {
+  display: none;
+}
+.FilmLocationTable__container {
+  max-height: 500px;
+}
