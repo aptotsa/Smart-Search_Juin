@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { QueryClient, QueryClientProvider } from "react-query"
 import { styled } from "@mui/material/styles"
 
 import FilterSection from "./views/FilterSection"
@@ -8,6 +9,8 @@ import DataTable from "./views/DataTable"
 import { DRAWER_WIDTH } from "./utils/constants"
 
 import style from "./App.module.css"
+
+const queryClient = new QueryClient()
 
 const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })<{
   open?: boolean
@@ -40,14 +43,16 @@ const App = () => {
   }
 
   return (
-    <div>
-      <TopBar open={open} handleDrawerOpen={handleDrawerOpen} />
-      <SideNavigation open={open} handleDrawerClose={handleDrawerClose} />
-      <Main open={open} className={style.main}>
-        <FilterSection />
-        <DataTable />
-      </Main>
-    </div>
+    <QueryClientProvider client={queryClient}>
+      <div>
+        <TopBar open={open} handleDrawerOpen={handleDrawerOpen} />
+        <SideNavigation open={open} handleDrawerClose={handleDrawerClose} />
+        <Main open={open} className={style.main}>
+          <FilterSection />
+          <DataTable />
+        </Main>
+      </div>
+    </QueryClientProvider>
   )
 }
 
