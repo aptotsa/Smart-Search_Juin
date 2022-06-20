@@ -6,6 +6,8 @@ import FilterSection from "./views/FilterSection"
 import TopBar from "./components/TopBar"
 import SideNavigation from "./components/SideNavigation"
 import DataTable from "./views/DataTable"
+import { FavoritesProvider } from "./contexts/FavoritesContext"
+import { SearchProvider } from "./contexts/SearchContext"
 import { DRAWER_WIDTH } from "./utils/constants"
 
 import style from "./App.module.css"
@@ -44,14 +46,18 @@ const App = () => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <div>
-        <TopBar open={open} handleDrawerOpen={handleDrawerOpen} />
-        <SideNavigation open={open} handleDrawerClose={handleDrawerClose} />
-        <Main open={open} className={style.main}>
-          <FilterSection />
-          <DataTable />
-        </Main>
-      </div>
+      <SearchProvider>
+        <FavoritesProvider>
+          <div>
+            <TopBar open={open} handleDrawerOpen={handleDrawerOpen} />
+            <SideNavigation open={open} handleDrawerClose={handleDrawerClose} />
+            <Main open={open} className={style.main}>
+              <FilterSection />
+              <DataTable />
+            </Main>
+          </div>
+        </FavoritesProvider>
+      </SearchProvider>
     </QueryClientProvider>
   )
 }

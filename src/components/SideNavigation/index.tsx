@@ -11,11 +11,15 @@ import ListItemButton from "@mui/material/ListItemButton"
 import ListItemIcon from "@mui/material/ListItemIcon"
 import ListItemText from "@mui/material/ListItemText"
 import StarBorder from "@mui/icons-material/StarBorder"
-import History from "@mui/icons-material/History"
 import ExpandLess from "@mui/icons-material/ExpandLess"
 import ExpandMore from "@mui/icons-material/ExpandMore"
+import Delete from "@mui/icons-material/Delete"
 
 import { DRAWER_WIDTH } from "../../utils/constants"
+import { FavoritesActionTypes, useDispatchFavorites, useFavorites } from "../../contexts/FavoritesContext"
+import { SearchActionTypes, useDispatchSearch } from "../../contexts/SearchContext"
+
+import style from "./style.module.css"
 
 const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
@@ -25,34 +29,36 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   justifyContent: "flex-end"
 }))
 
-type NavigationItemType = {
-  index: number
+interface NavigationItemProps {
   label: string
   icon: ReactNode
-  action: () => void
+  children: ReactNode
 }
 
-const navigationItems: NavigationItemType[] = [
-  {
-    index: 0,
-    label: "Favorites",
-    icon: <StarBorder />,
-    action: () => {}
-  },
-  {
-    index: 1,
-    label: "Previous Search",
-    icon: <History />,
-    action: () => {}
-  }
-]
+interface NavigationSubItemProps {
+  label: string
+  action?: () => void
+  icon?: ReactNode
+  iconAction?: () => void
+}
 
 interface SideNavigationProps {
   open?: boolean
   handleDrawerClose: () => void
 }
 
-const NavigationItem = ({ item }: { item: NavigationItemType }) => {
+const NavigationSubItem = ({ label, action, icon, iconAction }: NavigationSubItemProps) => {
+  return (
+    <List component="div" className={style.subItem} disablePadding>
+      <ListItemButton sx={{ pl: 4 }} onClick={action}>
+        <ListItemText primary={label} />
+      </ListItemButton>
+      {icon && <ListItemIcon onClick={iconAction}>{icon}</ListItemIcon>}
+    </List>
+  )
+}
+
+const NavigationItem = ({ label, icon, children }: NavigationItemProps) => {
   const [open, setOpen] = useState(false)
 
   const handleClick = () => {
@@ -62,14 +68,12 @@ const NavigationItem = ({ item }: { item: NavigationItemType }) => {
   return (
     <div>
       <ListItemButton onClick={handleClick}>
-        <ListItemIcon>{item.icon}</ListItemIcon>
-        <ListItemText primary={item.label} />
+        <ListItemIcon>{icon}</ListItemIcon>
+        <ListItemText primary={label} />
         {open ? <ExpandLess /> : <ExpandMore />}
       </ListItemButton>
       <Collapse in={open} timeout="auto" unmountOnExit>
-        <List component="div" disablePadding>
-          <ListItemButton sx={{ pl: 4 }}>{/* <ListItemText primary={""} /> */}</ListItemButton>
-        </List>
+        {children}
       </Collapse>
     </div>
   )
@@ -77,6 +81,25 @@ const NavigationItem = ({ item }: { item: NavigationItemType }) => {
 
 const SideNavigation = ({ open, handleDrawerClose }: SideNavigationProps) => {
   const theme = useTheme()
+  const favorites = useFavorites()
+  const dispatchFav = useDispatchFavorites()
+  const dispatchSearch = useDispatchSearch()
+
+  const selectFavoriteSearch = (favoriteId: number) => {
+    const favorite = favorites.find((fav) => fav.id === favoriteId)
+
+    if (!favorite) return
+
+    dispatchSearch({ type: SearchActionTypes.SAVE_SEARCH, payload: { ...favorite, id: new Date().getTime() } })
+  }
+
+  const deleteFavoriteSearch = (favoriteId: number) => {
+    const favorite = favorites.find((fav) => fav.id === favoriteId)
+
+    if (!favorite) return
+
+    dispatchFav({ type: FavoritesActionTypes.REMOVE_FROM_FAVORITES, payload: favorite })
+  }
 
   return (
     <Drawer
@@ -99,9 +122,17 @@ const SideNavigation = ({ open, handleDrawerClose }: SideNavigationProps) => {
       </DrawerHeader>
       <Divider />
       <List>
-        {navigationItems.map((item) => (
-          <NavigationItem item={item} />
-        ))}
+        <NavigationItem label="Favorites" icon={<StarBorder />}>
+          {favorites.map((favorite) => (
+            <NavigationSubItem
+              key={favorite.id}
+              label={favorite.keys.join(",")}
+              action={() => selectFavoriteSearch(favorite.id)}
+              icon={<Delete />}
+              iconAction={() => deleteFavoriteSearch(favorite.id)}
+            />
+          ))}
+        </NavigationItem>
       </List>
     </Drawer>
   )

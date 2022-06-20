@@ -1,0 +1,12 @@
+.container {
+  display: flex;
+}
+
+.searchBar {
+  flex-grow: 1;
+  margin-right: 1rem;
+}
+
+.saveIcon {
+  padding: 0 1rem;
+}
