@@ -1,9 +1,13 @@
 import React, { useReducer, useContext, createContext, useEffect, ReactElement } from "react"
+import { SearchType } from "./SearchContext"
 
-type FavoritesContextState = Array<{
+type FavoriteType = {
   id: number
-  keys: string[]
-}>
+  label: string
+  search: Array<SearchType>
+}
+
+type FavoritesContextState = Array<FavoriteType>
 
 export enum FavoritesActionTypes {
   ADD_TO_FAVORITES = "ADD_TO_FAVORITES",
@@ -13,10 +17,7 @@ export enum FavoritesActionTypes {
 
 type FavoritesAction = {
   type: FavoritesActionTypes
-  payload: {
-    id: number
-    keys: string[]
-  }
+  payload: FavoriteType
 }
 
 export const FavoritesStateContext = createContext<FavoritesContextState | undefined>(undefined)

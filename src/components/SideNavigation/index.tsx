@@ -14,12 +14,11 @@ import StarBorder from "@mui/icons-material/StarBorder"
 import ExpandLess from "@mui/icons-material/ExpandLess"
 import ExpandMore from "@mui/icons-material/ExpandMore"
 import Delete from "@mui/icons-material/Delete"
+import History from "@mui/icons-material/History"
 
 import { DRAWER_WIDTH } from "../../utils/constants"
 import { FavoritesActionTypes, useDispatchFavorites, useFavorites } from "../../contexts/FavoritesContext"
-import { SearchActionTypes, useDispatchSearch } from "../../contexts/SearchContext"
-
-import style from "./style.module.css"
+import { SearchActionTypes, useDispatchSearch, useSearch } from "../../contexts/SearchContext"
 
 const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
@@ -49,12 +48,10 @@ interface SideNavigationProps {
 
 const NavigationSubItem = ({ label, action, icon, iconAction }: NavigationSubItemProps) => {
   return (
-    <List component="div" className={style.subItem} disablePadding>
-      <ListItemButton sx={{ pl: 4 }} onClick={action}>
-        <ListItemText primary={label} />
-      </ListItemButton>
+    <ListItemButton sx={{ pl: 4 }} onClick={action} dense>
+      <ListItemText primary={label} />
       {icon && <ListItemIcon onClick={iconAction}>{icon}</ListItemIcon>}
-    </List>
+    </ListItemButton>
   )
 }
 
@@ -73,7 +70,9 @@ const NavigationItem = ({ label, icon, children }: NavigationItemProps) => {
         {open ? <ExpandLess /> : <ExpandMore />}
       </ListItemButton>
       <Collapse in={open} timeout="auto" unmountOnExit>
-        {children}
+        <List component="div" disablePadding>
+          {children}
+        </List>
       </Collapse>
     </div>
   )
@@ -82,6 +81,7 @@ const NavigationItem = ({ label, icon, children }: NavigationItemProps) => {
 const SideNavigation = ({ open, handleDrawerClose }: SideNavigationProps) => {
   const theme = useTheme()
   const favorites = useFavorites()
+  const search = useSearch()
   const dispatchFav = useDispatchFavorites()
   const dispatchSearch = useDispatchSearch()
 
@@ -90,7 +90,15 @@ const SideNavigation = ({ open, handleDrawerClose }: SideNavigationProps) => {
 
     if (!favorite) return
 
-    dispatchSearch({ type: SearchActionTypes.SAVE_SEARCH, payload: { ...favorite, id: new Date().getTime() } })
+    dispatchSearch({ type: SearchActionTypes.NEW_SEARCH, payload: { ...favorite, id: new Date().getTime() } })
+  }
+
+  const selectSearchFromHistory = (searchId: number) => {
+    const oldSearch = search.last.find((search) => search.id === searchId)
+
+    if (!oldSearch) return
+
+    dispatchSearch({ type: SearchActionTypes.NEW_SEARCH, payload: { ...oldSearch, id: new Date().getTime() } })
   }
 
   const deleteFavoriteSearch = (favoriteId: number) => {
@@ -122,14 +130,23 @@ const SideNavigation = ({ open, handleDrawerClose }: SideNavigationProps) => {
       </DrawerHeader>
       <Divider />
       <List>
-        <NavigationItem label="Favorites" icon={<StarBorder />}>
+        <NavigationItem label="Favoris" icon={<StarBorder />}>
           {favorites.map((favorite) => (
             <NavigationSubItem
               key={favorite.id}
-              label={favorite.keys.join(",")}
+              label={favorite.label}
               action={() => selectFavoriteSearch(favorite.id)}
               icon={<Delete />}
               iconAction={() => deleteFavoriteSearch(favorite.id)}
+            />
+          ))}
+        </NavigationItem>
+        <NavigationItem label="Historique" icon={<History />}>
+          {search.last.map((search) => (
+            <NavigationSubItem
+              key={search.id}
+              label={search.id.toString()}
+              action={() => selectSearchFromHistory(search.id)}
             />
           ))}
         </NavigationItem>
