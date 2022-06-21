@@ -5,7 +5,7 @@ import LinearProgress from "@mui/material/LinearProgress"
 import { getFilmSets } from "../../api/lieuDeTournageParis"
 import IDataset from "../../models/IDataset"
 import { useSearch } from "../../contexts/SearchContext"
-import useFilterData from "../../hooks/useFilterData"
+import useFilterData from "../../utils/useFilterData"
 import IRecord from "../../models/IRecord"
 
 import style from "./style.module.css"

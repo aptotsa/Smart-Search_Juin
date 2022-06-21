@@ -12,6 +12,8 @@ Le dossier `models` contient les interfaces qui décrivent le jeu de données. C
 
 Ce dossier regroupe l'ensemble des composants qui ont pour but d'être le plus générique possible afin de pouvoir les réutiliser au plus à différents endroits du code.
 
+`SideNavigation` permet d'afficher les favoris enrgistrés et l'historique des recherches dans le panneau latéral
+
 ## `Views`
 
 Les `views` représentent des sections de pages.
@@ -27,3 +29,7 @@ Les CSS Modules ont été utilisé pour ajouter du styles. Il y a un fichier `gl
 ## `API`
 
 Le dossier `api` contient les méthodes qui permettent de construire les requêtes qu'on pourra appeler par la suite avec le hook `useQuery`
+
+## `useFilterData`
+
+`useFilterData` est une fonction qui permet de prendre en entrée le jeu de donnée et les filtres en cours afin de récupérer les données souhaitées
