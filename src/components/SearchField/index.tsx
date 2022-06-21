@@ -6,10 +6,11 @@ interface SearchFieldProps {
   label: string
   placeholder?: string
   options: SearchType[]
+  isLoading?: boolean
   className?: string
 }
 
-const SearchField = ({ id, label, placeholder = "", options, className }: SearchFieldProps) => {
+const SearchField = ({ id, label, placeholder = "", options, isLoading, className }: SearchFieldProps) => {
   const search = useSearch()
   const dispatchSearch = useDispatchSearch()
 
@@ -25,6 +26,7 @@ const SearchField = ({ id, label, placeholder = "", options, className }: Search
 
   return (
     <Autocomplete
+      loading={isLoading}
       multiple
       freeSolo
       id={`search-${id}`}

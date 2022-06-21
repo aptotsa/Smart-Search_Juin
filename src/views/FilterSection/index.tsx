@@ -1,18 +1,35 @@
+import { useQuery } from "react-query"
 import { IconButton } from "@mui/material"
 import { SaveOutlined } from "@mui/icons-material"
 
-import data from "../../api/opendata.paris.fr.json"
 import SearchField from "../../components/SearchField"
 import IDataset from "../../models/IDataset"
-
 import { FavoritesActionTypes, useDispatchFavorites } from "../../contexts/FavoritesContext"
 import { SearchType, useSearch } from "../../contexts/SearchContext"
+import { getFilmSets } from "../../api/lieuDeTournageParis"
 
 import style from "./style.module.css"
 
 const FilterSection = () => {
+  const { isLoading, data, error } = useQuery<IDataset, Error>("lieuDeTournage", () => getFilmSets({ rows: 10000 }))
+
   const dispatchFav = useDispatchFavorites()
   const search = useSearch()
+
+  if (isLoading)
+    return (
+      <div className={style.container}>
+        <SearchField
+          id="search"
+          label="Rechercher par Année de tournage, Type de tournage et/ou Arrondissement"
+          options={[]}
+          isLoading={isLoading}
+          className={style.searchBar}
+        />
+      </div>
+    )
+
+  if (error || !data) return <div>An error occurred...</div>
 
   const loadFilters = (data: IDataset): SearchType[] => {
     let filtersList: SearchType[] = []
@@ -45,6 +62,7 @@ const FilterSection = () => {
         id="search"
         label="Rechercher par Année de tournage, Type de tournage et/ou Arrondissement"
         options={loadFilters(data)}
+        isLoading={isLoading}
         className={style.searchBar}
       />
       <IconButton aria-label="delete" size="medium" sx={{ padding: "0 1rem" }} onClick={saveFavorite}>
