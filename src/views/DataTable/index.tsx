@@ -1,8 +1,12 @@
 import { useQuery } from "react-query"
 import { DataGrid, GridColDef } from "@mui/x-data-grid"
+import LinearProgress from "@mui/material/LinearProgress"
 
 import { getFilmSets } from "../../api/lieuDeTournageParis"
 import IDataset from "../../models/IDataset"
+import { useSearch } from "../../contexts/SearchContext"
+import useFilterData from "../../hooks/useFilterData"
+import IRecord from "../../models/IRecord"
 
 import style from "./style.module.css"
 
@@ -49,8 +53,8 @@ const createData = (
     dateFin
   }
 }
-const rows = (data: IDataset) => {
-  return data.records.map((record, index) =>
+const rows = (data: IRecord[]) => {
+  return data.map((record, index) =>
     createData(
       index.toString(),
       record.fields.type_tournage,
@@ -65,14 +69,25 @@ const rows = (data: IDataset) => {
 }
 
 const DataTable = () => {
-  const { isLoading, data, error } = useQuery<IDataset, Error>("lieuDeTournage", () => getFilmSets(100))
+  const { isLoading, data, error } = useQuery<IDataset, Error>("lieuDeTournage", () => getFilmSets({ rows: 10000 }))
 
-  if (isLoading) return <div>Loading...</div>
-  if (error || !data) return <div>An error occurred...</div>
+  const search = useSearch()
+  const filteredData = useFilterData(data, search.current?.search)
+
+  if (error) return <div>An error occurred...</div>
 
   return (
     <div className={style.container}>
-      <DataGrid rows={rows(data)} columns={columns} pageSize={10} rowsPerPageOptions={[10]} checkboxSelection />
+      <DataGrid
+        rows={rows(filteredData)}
+        columns={columns}
+        pageSize={10}
+        rowsPerPageOptions={[10, 25, 50]}
+        loading={isLoading}
+        components={{
+          LoadingOverlay: LinearProgress
+        }}
+      />
     </div>
   )
 }

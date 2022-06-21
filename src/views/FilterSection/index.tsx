@@ -6,7 +6,7 @@ import SearchField from "../../components/SearchField"
 import IDataset from "../../models/IDataset"
 
 import { FavoritesActionTypes, useDispatchFavorites } from "../../contexts/FavoritesContext"
-import { useSearch } from "../../contexts/SearchContext"
+import { SearchType, useSearch } from "../../contexts/SearchContext"
 
 import style from "./style.module.css"
 
@@ -14,12 +14,13 @@ const FilterSection = () => {
   const dispatchFav = useDispatchFavorites()
   const search = useSearch()
 
-  const loadFilters = (data: IDataset) => {
-    let filtersList: string[] = []
+  const loadFilters = (data: IDataset): SearchType[] => {
+    let filtersList: SearchType[] = []
 
     data.facet_groups.forEach((group) => {
-      if (group.name === "type_tournage" || group.name === "annee_tournage" || group.name === "ardt_lieu")
-        group.facets.map((facet) => filtersList.push(facet.name))
+      if (group.name === "type_tournage" || group.name === "annee_tournage" || group.name === "ardt_lieu") {
+        group.facets.map((facet) => filtersList.push({ groupName: group.name, keyword: facet.name }))
+      }
     })
 
     return filtersList
@@ -32,7 +33,8 @@ const FilterSection = () => {
       type: FavoritesActionTypes.ADD_TO_FAVORITES,
       payload: {
         id: new Date().getTime(),
-        keys: search.current.keys
+        label: `${new Date().getTime()}`,
+        search: search.current.search
       }
     })
   }

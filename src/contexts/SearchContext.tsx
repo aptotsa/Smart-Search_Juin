@@ -1,27 +1,26 @@
 import React, { useReducer, useContext, createContext, ReactElement } from "react"
 
-type SearchType = {
+export type SearchType = { groupName: string; keyword: string }
+
+type SearchTypeItem = {
   id: number
-  keys: string[]
+  search: SearchType[]
 }
 
 type SearchContextState = {
-  current: SearchType | null
-  last: SearchType[]
+  current: SearchTypeItem | null
+  last: SearchTypeItem[]
 }
 
 export enum SearchActionTypes {
-  SAVE_SEARCH = "SAVE_SEARCH",
+  NEW_SEARCH = "NEW_SEARCH",
   REMOVE_LAST_SEARCH = "REMOVE_LAST_SEARCH",
   CLEAR_SEARCH = "CLEAR_SEARCH"
 }
 
 type SearchAction = {
   type: SearchActionTypes
-  payload: {
-    id: number
-    keys: string[]
-  }
+  payload: SearchTypeItem
 }
 
 export const SearchStateContext = createContext<SearchContextState | undefined>(undefined)
@@ -31,7 +30,7 @@ const initialValue: SearchContextState = { current: null, last: [] }
 
 const reducer = (state: SearchContextState, action: SearchAction) => {
   switch (action.type) {
-    case SearchActionTypes.SAVE_SEARCH:
+    case SearchActionTypes.NEW_SEARCH:
       if (!state.current) return { ...state, current: action.payload }
 
       return { last: [...state.last, state.current], current: action.payload }
