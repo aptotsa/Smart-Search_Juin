@@ -81,8 +81,6 @@ const DataTable = () => {
       <DataGrid
         rows={rows(filteredData)}
         columns={columns}
-        pageSize={10}
-        rowsPerPageOptions={[10, 25, 50]}
         loading={isLoading}
         components={{
           LoadingOverlay: LinearProgress
