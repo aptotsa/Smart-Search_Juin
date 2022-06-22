@@ -2,6 +2,49 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Détail de mon approche
+
+### Barre de recherche
+
+La barre de recherche permet de filtrer des tournages grâce à une requête en texte intégral qui vient en addition des filtres sélectionnés.
+Une requête est effectuée après que l'utilisateur est arrêté d'écrire depuis 500ms. Pour cela, j'utilise un hook custom appelé useDebounce
+
+### Les filtres
+
+Je construis les options de l'input de sélection multiple via un premier appel à l'API.
+Il est possible de rechercher des filtres spécifiques grâce au component Autocomplete de Material-UI
+
+### Les résultats
+
+Les résultats sont affichés sous forme de carte rectangulaire avec les informations pertinentes de chaque tournage. Un chargement circulaire apparaît à la fin des résultats lorsque la requête à l'API est en cours.
+
+### Pagination
+
+La pagination est très simple, elle consiste simplement en un bouton à la fin des résultats qui permet de charger 10 résultats de plus.
+pour cela, j'utilise le paramètre "start" et "rows" de l'API.
+Le bouton apparaît seulement si le nombre de résultat affiché est inférieur au résultat total.
+
+### L'interface
+
+L'interface est responsive et assez simpliste.
+Chaque information est affichée afin qu'elle soit accessible de manière intuitive et rapide.
+J'utilise principalement l'outil de css in js de Material-UI pour l'interface et du style dans une moindre mesure.
+
+### L'architecture
+
+L'architecture est très plate, il me semble inutile de complexifier l'architecture avec des sous-dossiers compte tenu
+de la taille du projet. De plus, définir l'architecture d'une application sans savoir les évolutions à venir de celle-ci semble un peu prématuré.
+
+- App.js
+  - Search.jsx
+    - Searchbar.jsx
+    - Results.jsx
+      - CardResult.jsx
+
+### Le +
+
+Un icône d'une carte cliquable à la fin de chaque carte rectangulaire, il permet d'ouvrir le lieu exact du tournage sur Google Maps.
+
 ## Available Scripts
 
 In the project directory, you can run:
@@ -28,43 +71,3 @@ The build is minified and the filenames include the hashes.\
 Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
